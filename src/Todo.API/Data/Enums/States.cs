@@ -1,4 +1,4 @@
-﻿namespace Todo.API.Enums
+﻿namespace Todo.API.Data.Enums
 {
     public enum States
     {

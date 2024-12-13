@@ -40,7 +40,7 @@ namespace Todo.API.Controllers
 
         // PUT api/todos/1
         [HttpPut("{id}")]
-        public ActionResult Update(int id, [FromBody] TodoItem item)
+        public ActionResult Update([FromRoute]int id, [FromBody] TodoItem item)
         {
             if (id != item.Id)
             {
