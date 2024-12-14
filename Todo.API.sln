@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.API", "src\Todo.API\To
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C420A04C-A9AC-4FB2-9CA5-03E2097D52E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Infrastructure", "src\Todo.Infrastructure\Todo.Infrastructure.csproj", "{1C7E2757-4B7F-4903-B373-7CFC1B97463E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,11 +19,16 @@ Global
 		{3B5F301A-C916-4F9C-972C-9F5E165CBC6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B5F301A-C916-4F9C-972C-9F5E165CBC6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B5F301A-C916-4F9C-972C-9F5E165CBC6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C7E2757-4B7F-4903-B373-7CFC1B97463E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C7E2757-4B7F-4903-B373-7CFC1B97463E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C7E2757-4B7F-4903-B373-7CFC1B97463E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C7E2757-4B7F-4903-B373-7CFC1B97463E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3B5F301A-C916-4F9C-972C-9F5E165CBC6B} = {C420A04C-A9AC-4FB2-9CA5-03E2097D52E4}
+		{1C7E2757-4B7F-4903-B373-7CFC1B97463E} = {C420A04C-A9AC-4FB2-9CA5-03E2097D52E4}
 	EndGlobalSection
 EndGlobal
