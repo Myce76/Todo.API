@@ -1,26 +1,34 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Todo.API.Models;
+using Microsoft.AspNetCore.OData.Formatter;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Todo.API.Data;
+using Todo.API.Data.Enums;
+using Todo.API.Filters;
 
 namespace Todo.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("odata/[controller]")]
     [ApiController]
-    public class TodosController : ControllerBase
+    public class TodosController : ODataController
     {
         // In Memory Storage for simplicity
         private static readonly List<TodoItem> _todoItems = [];
 
-        // GET api/todos
+        // GET odata/todos
         [HttpGet]
-        public ActionResult<IEnumerable<TodoItem>> Get()
+        [ODataOperationFilterCustom]
+        public async Task<ActionResult<IQueryable<TodoItem>>> Get([FromODataUri] string? description, [FromODataUri] States? states, [FromServices] ODataQueryOptions<TodoItem> options)
         {
-            return Ok(_todoItems);
+            IQueryable results = options.ApplyTo(_todoItems.AsQueryable());
+
+            return Ok(results as IQueryable<TodoItem>);
         }
 
-        // GET api/todos/1
-        [HttpGet("{id}")]
-        public ActionResult<TodoItem> Get(int id)
+        // GET odata/todos/1
+        [HttpGet("({id})")]
+        public async Task<ActionResult<TodoItem>> Get([FromRoute] int id)
         {
             var todoItem = _todoItems.FirstOrDefault(x => x.Id == id);
             if (todoItem == null)
@@ -32,7 +40,7 @@ namespace Todo.API.Controllers
 
         // POST api/todos
         [HttpPost]
-        public ActionResult Create([FromBody] TodoItem item) 
+        public async Task<ActionResult> Create([FromBody] TodoItem item) 
         {
             _todoItems.Add(item);
             return CreatedAtAction(nameof(Get), new { id = item.Id }, item);
@@ -40,7 +48,7 @@ namespace Todo.API.Controllers
 
         // PUT api/todos/1
         [HttpPut("{id}")]
-        public ActionResult Update([FromRoute]int id, [FromBody] TodoItem item)
+        public async Task<ActionResult> Update([FromRoute]int id, [FromBody] TodoItem item)
         {
             if (id != item.Id)
             {
@@ -61,7 +69,7 @@ namespace Todo.API.Controllers
 
         // DELETE api/todos/1
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var itemToDelete = _todoItems.FirstOrDefault(x => x.Id == id);
             if (itemToDelete == null)
