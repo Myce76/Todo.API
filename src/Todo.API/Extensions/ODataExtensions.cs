@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.OData;
 using Microsoft.OData.ModelBuilder;
-using Todo.API.Data;
+using Todo.Domain.Entities;
 
 namespace Todo.API.Extensions
 {
@@ -11,7 +11,7 @@ namespace Todo.API.Extensions
             var modelBuilder = new ODataConventionModelBuilder();
 
             modelBuilder.EnableLowerCamelCase();
-            modelBuilder.EnumType<Data.Enums.States>();
+            modelBuilder.EnumType<ItemStatus>();
 
             modelBuilder.EntitySet<TodoItem>("ODataTodo");
             //modelBuilder.EntitySet<ReportGroupModel>("ODataReportGroup");

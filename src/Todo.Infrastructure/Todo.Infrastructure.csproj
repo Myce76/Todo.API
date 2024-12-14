@@ -10,4 +10,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Todo.Domain\Todo.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

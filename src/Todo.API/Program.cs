@@ -1,9 +1,12 @@
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Todo.API.Extensions;
 using Todo.API.Filters;
+using Todo.Infrastructure.Persistence;
 
 namespace Todo.API
 {
@@ -20,6 +23,10 @@ namespace Todo.API
                             {
                                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                             });
+            builder.Services.AddDbContext<TodoContext>(options =>
+                                                       options.UseCosmos(builder.Configuration.GetConnectionString("DefaultConnection") ??
+                                                       "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+                                                       "TodosDB"));
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
@@ -57,6 +64,16 @@ namespace Todo.API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+            }
+
+            using (var scopeAsync = app.Services.CreateAsyncScope())
+            {
+                var dbContext = scopeAsync.ServiceProvider.GetRequiredService<TodoContext>();
+                Task.Run(async () =>
+                {
+                    await dbContext.Database.EnsureDeletedAsync();
+                    await dbContext.Database.EnsureCreatedAsync();
+                });
             }
 
             app.UseHttpsRedirection();

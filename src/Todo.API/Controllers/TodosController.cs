@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Todo.API.Data;
-using Todo.API.Data.Enums;
 using Todo.API.Filters;
+using Todo.Domain.Entities;
 
 namespace Todo.API.Controllers
 {
@@ -19,7 +17,7 @@ namespace Todo.API.Controllers
         // GET odata/todos
         [HttpGet]
         [ODataOperationFilterCustom]
-        public async Task<ActionResult<IQueryable<TodoItem>>> Get([FromODataUri] string? description, [FromODataUri] States? states, [FromServices] ODataQueryOptions<TodoItem> options)
+        public async Task<ActionResult<IQueryable<TodoItem>>> Get([FromODataUri] string? description, [FromODataUri] ItemStatus? states, [FromServices] ODataQueryOptions<TodoItem> options)
         {
             IQueryable results = options.ApplyTo(_todoItems.AsQueryable());
 
@@ -28,9 +26,9 @@ namespace Todo.API.Controllers
 
         // GET odata/todos/1
         [HttpGet("({id})")]
-        public async Task<ActionResult<TodoItem>> Get([FromRoute] int id)
+        public async Task<ActionResult<TodoItem>> Get([FromRoute] Guid id)
         {
-            var todoItem = _todoItems.FirstOrDefault(x => x.Id == id);
+            var todoItem = _todoItems.FirstOrDefault(x => x.Id == id.ToString());
             if (todoItem == null)
             {
                 return NotFound();
@@ -48,9 +46,9 @@ namespace Todo.API.Controllers
 
         // PUT api/todos/1
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update([FromRoute]int id, [FromBody] TodoItem item)
+        public async Task<ActionResult> Update([FromRoute]Guid id, [FromBody] TodoItem item)
         {
-            if (id != item.Id)
+            if (id.ToString() != item.Id)
             {
                 return BadRequest();
             }
@@ -69,9 +67,9 @@ namespace Todo.API.Controllers
 
         // DELETE api/todos/1
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(Guid id)
         {
-            var itemToDelete = _todoItems.FirstOrDefault(x => x.Id == id);
+            var itemToDelete = _todoItems.FirstOrDefault(x => x.Id == id.ToString());
             if (itemToDelete == null)
             {
                 return NotFound();
