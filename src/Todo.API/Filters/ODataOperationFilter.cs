@@ -54,6 +54,18 @@ namespace Todo.API.Filters
                     Description = "Number of objects to skip in the current order (ex. 50)",
                     Required = false
                 });
+
+                operation.Parameters.Add(new OpenApiParameter()
+                {
+                    Name = "$orderby",
+                    In = ParameterLocation.Query,
+                    Schema = new OpenApiSchema
+                    {
+                        Type = "string",
+                    },
+                    Description = "Define the order by one or more fields (ex. Description)",
+                    Required = false
+                });
             }
         }
     }

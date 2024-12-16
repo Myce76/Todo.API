@@ -19,7 +19,10 @@ namespace Todo.Infrastructure.Persistence
             modelBuilder.HasDefaultContainer("Store");
 
             modelBuilder.Entity<TodoItem>()
-                .ToContainer("Todos");
+                        .ToContainer("Todos");
+
+            modelBuilder.Entity<TodoItem>()
+                        .HasPartitionKey(o => o.Id);
 
             modelBuilder.Entity<TodoItem>(entity =>
             { 

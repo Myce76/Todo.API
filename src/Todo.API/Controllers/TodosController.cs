@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Todo.API.Extensions;
 using Todo.API.Filters;
 using Todo.Domain.Entities;
 
@@ -19,7 +20,12 @@ namespace Todo.API.Controllers
         [ODataOperationFilterCustom]
         public async Task<ActionResult<IQueryable<TodoItem>>> Get([FromODataUri] string? description, [FromODataUri] ItemStatus? states, [FromServices] ODataQueryOptions<TodoItem> options)
         {
-            IQueryable results = options.ApplyTo(_todoItems.AsQueryable());
+            if (options.Filter != null)
+            {
+                var filter = options.Filter.ToExpression<TodoItem>();
+            }
+            var results = options.ApplyTo(_todoItems.AsQueryable());
+            //var filteredQueryable = description is null ? results : results.Where(x => x.De == currentUserEmailAddress);
 
             return Ok(results as IQueryable<TodoItem>);
         }

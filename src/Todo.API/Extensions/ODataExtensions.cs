@@ -14,10 +14,9 @@ namespace Todo.API.Extensions
             modelBuilder.EnumType<ItemStatus>();
 
             modelBuilder.EntitySet<TodoItem>("ODataTodo");
-            //modelBuilder.EntitySet<ReportGroupModel>("ODataReportGroup");
 
             services.AddControllers().AddOData(
-                options => options.Select().Filter().OrderBy().Count().SetMaxTop(25).AddRouteComponents(
+                options => options.Filter().OrderBy().Count().SetMaxTop(25).AddRouteComponents(
                 "odata",
                     modelBuilder.GetEdmModel()));
         }
